@@ -1,0 +1,624 @@
+{
+	"info": {
+		"_postman_id": "3ec2c2cf-6da5-41e3-bfd0-132e46e142f7",
+		"name": "project_2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21850162"
+	},
+	"item": [
+		{
+			"name": "LIST_USERS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the first name of id 7\", function () {\r",
+							"    pm.expect(jsonData.data[0].first_name).to.eql(\"Michael\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the last id of page 2\", function () {\r",
+							"    pm.expect(jsonData.data[5].id).to.eql(12);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email of id 10 with valid data\", function () {\r",
+							"    pm.expect(jsonData.data[3].email).to.eql(\"byron.fields@reqres.in\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email of id 10 with invalid email data\", function () {\r",
+							"    pm.expect(jsonData.data[3].email).to.eql(\"byron.fields@reqres\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email of id 10 with extra space\", function () {\r",
+							"    pm.expect(jsonData.data[3].email).to.eql(\"byron. fields@reqres.in\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the text field with valid data\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql(\"To keep ReqRes free, contributions towards server costs are appreciated!\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/api/users?page=2",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SINGLE_USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the id\", function () {\r",
+							"    pm.expect(jsonData.data.id).to.eql(2);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the last name with valid data\", function () {\r",
+							"    pm.expect(jsonData.data.last_name).to.eql(\"Weaver\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the last name with all lowercases\", function () {\r",
+							"    pm.expect(jsonData.data.last_name).to.eql(\"weaver\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the url with valid data\", function () {\r",
+							"    pm.expect(jsonData.support.url).to.eql(\"https://reqres.in/#support-heading\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the url with incorrect protocol\", function () {\r",
+							"    pm.expect(jsonData.support.url).to.eql(\"http://reqres.in/#support-heading\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email field with valid data\", function () {\r",
+							"    pm.expect(jsonData.data.email).to.eql(\"janet.weaver@reqres.in\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email field with invalid email data\", function () {\r",
+							"    pm.expect(jsonData.data.email).to.eql(\"janet_weaver@reqres.in\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/api/users/2",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SINGLE_USER_NOT_FOUND",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/api/users/23",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the name with valid data\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(\"morpheus\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the name with invalid data\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(\"alice\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the job with valid data\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql(\"leader\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the job with invalid data\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql(\"leader1\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/users",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the name with valid data\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(\"morpheus\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the name with invalid data\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(\"mary\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the job with valid data\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql(\"zion resident\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the job with invalid data\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql(\"resident\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"zion resident\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/users/2",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the name with valid data\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(\"morpheus\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the name with invalid data\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(\"mary\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the job with valid data\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql(\"zion resident\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the job with invalid data\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql(\"resident\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"zion resident\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/users/2",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/api/users/2",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REGISTER_SUCCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the id field with valid data\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(4);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the id field with invalid data\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(2);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/register",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REGISTER_UNSUCCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the error message\", function () {\r",
+							"    pm.expect(jsonData.error).to.eql(\"Missing password\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sydney@fife\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/register",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN_SUCCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/login",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN_UNSUCCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the error message\", function () {\r",
+							"    pm.expect(jsonData.error).to.eql(\"Missing password\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"peter@klaven\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/login",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELAYED_RESPONSE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the first name of id 2\", function () {\r",
+							"    pm.expect(jsonData.data[1].first_name).to.eql(\"Janet\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the last id\", function () {\r",
+							"    pm.expect(jsonData.data[5].id).to.eql(6);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email of id 3 with valid data\", function () {\r",
+							"    pm.expect(jsonData.data[2].email).to.eql(\"emma.wong@reqres.in\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email of id 3 with incorrect email data\", function () {\r",
+							"    pm.expect(jsonData.data[2].email).to.eql(\"byron.fields@reqres.in\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the email of id 3 with invalid data\", function () {\r",
+							"    pm.expect(jsonData.data[2].email).to.eql(\"emma.wo.ng@reqres.in\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the text field with valid data\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql(\"To keep ReqRes free, contributions towards server costs are appreciated!\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check the text field with wrong spelling\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql(\"To keep ReqRes free, contributios towards server costs are appreciated!\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/api/users?delay=3",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "delay",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
